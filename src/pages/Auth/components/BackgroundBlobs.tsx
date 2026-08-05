@@ -1,0 +1,49 @@
+export default function BackgroundBlobs() {
+  return (
+    <>
+      <div
+        className="
+          absolute
+          -top-40
+          -left-40
+          h-96
+          w-96
+          rounded-full
+          bg-indigo-400/30
+          blur-3xl
+          animate-pulse
+        "
+      />
+
+      <div
+        className="
+          absolute
+          bottom-0
+          right-0
+          h-[420px]
+          w-[420px]
+          rounded-full
+          bg-cyan-300/20
+          blur-3xl
+          animate-pulse
+        "
+      />
+
+      <div
+        className="
+          absolute
+          top-1/2
+          left-1/2
+          h-72
+          w-72
+          -translate-x-1/2
+          -translate-y-1/2
+          rounded-full
+          bg-purple-400/20
+          blur-3xl
+          animate-pulse
+        "
+      />
+    </>
+  );
+}
