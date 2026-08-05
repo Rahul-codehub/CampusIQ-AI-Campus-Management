@@ -1,178 +1,340 @@
-# CampusIQ – Campus AI Management System
 
-## Overview
+# 🎓 CampusIQ
+### AI Powered Campus Management System
 
-CampusIQ is an AI-powered Campus Management System designed to streamline academic and administrative operations within educational institutions. The platform provides role-based access for Administrators, Faculty, and Students, enabling efficient management of attendance, assignments, notifications, analytics, and campus communication.
+An intelligent campus management platform built using the **MERN Stack** with integrated AI features to simplify academic administration, student management, attendance, assignments, analytics, and communication.
 
-The system leverages modern web technologies and AI integration to enhance user experience, automate routine tasks, and provide actionable insights through dashboards and analytics.
+![React](https://img.shields.io/badge/React-19-blue?logo=react)
+![Node.js](https://img.shields.io/badge/Node.js-Express-green?logo=node.js)
+![MongoDB](https://img.shields.io/badge/MongoDB-Database-success?logo=mongodb)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?logo=typescript)
+![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-4.x-38BDF8?logo=tailwindcss)
+![License](https://img.shields.io/badge/License-MIT-yellow)
 
----
-
-## Features
-
-### Admin Module
-
-* Manage Students, Faculty, and Courses
-* Monitor Attendance Records
-* Manage Events and Notices
-* View System Analytics and Reports
-* Handle Complaints and Feedback
-* User Role Management
-
-### Faculty Module
-
-* Mark and Manage Attendance
-* Create and Manage Assignments
-* View Student Performance
-* Access Attendance Analytics
-* Publish Notices and Updates
-
-### Student Module
-
-* View Attendance Records
-* Upload Assignments
-* Receive Notifications and Announcements
-* Access Academic Analytics
-* Interact with AI Chatbot
-
-### AI Features
-
-* AI-Powered Chatbot Assistance
-* Intelligent Query Handling
-* Automated Student Support
+</div>
 
 ---
 
-## Tech Stack
+# 📖 Overview
 
-### Frontend
+CampusIQ is a modern AI-powered Campus Management System designed to digitize academic operations and improve communication between students, faculty, and administrators.
 
-* React.js
-* TypeScript
-* Tailwind CSS
-* React Router
-* Recharts
-
-### Backend
-
-* Node.js
-* Express.js
-
-### Database
-
-* MongoDB
-
-### Additional Technologies
-
-* JWT Authentication
-* Socket.io
-* REST APIs
-* Groq AI Integration
+The platform combines traditional campus management features with AI assistance, analytics dashboards, real-time notifications, and secure authentication.
 
 ---
 
-## System Architecture
+# ✨ Features
 
-CampusIQ follows a modern client-server architecture:
+## 👨‍🎓 Student Portal
 
-* Frontend: React-based responsive user interface
-* Backend: Express.js REST API server
-* Database: MongoDB for data storage
-* Authentication: JWT-based secure authentication
-* AI Service: Groq-powered chatbot integration
-
----
-
-## Key Functionalities
-
-* Role-Based Authentication
-* Attendance Management System
-* Attendance Analytics Dashboard
-* Assignment Submission & Tracking
-* Complaint Management
-* Event & Notice Management
-* Real-Time Notifications
-* AI Chatbot Integration
-* Data Visualization and Reporting
+- Student Dashboard
+- Attendance Tracking
+- Assignment Upload
+- Notice Board
+- Events
+- Complaints
+- AI Chatbot
+- Analytics
+- Profile Management
+- Security Settings
+- Notifications
 
 ---
 
-## Installation
+## 👨‍🏫 Faculty Portal
 
-### Clone Repository
+- Faculty Dashboard
+- Attendance Management
+- Assignment Management
+- Student Management
+- Events
+- Notice Management
+- Analytics
+- AI Assistant
+- Profile & Settings
 
-```bash
-git clone https://github.com/Rahul-codehub/Campus-AI-Management-System.git
+---
+
+## 👨‍💼 Admin Portal
+
+- Dashboard
+- Student Management
+- Faculty Management
+- Course Management
+- Department Management
+- Registration Approval
+- Attendance Analytics
+- Complaint Resolution
+- Notice Management
+- Event Management
+- Reports
+- Database Information
+- Backup Management
+- System Configuration
+
+---
+
+# 🤖 AI Features
+
+- AI Chat Assistant
+- Smart Campus Queries
+- AI Powered Analytics
+- Intelligent Dashboard
+- Automated Notifications
+- AI Ready Architecture
+
+---
+
+# 🔐 Authentication
+
+- JWT Authentication
+- Role Based Access Control
+- Student Login
+- Faculty Login
+- Admin Login
+- Registration Approval Workflow
+- Password Reset
+- Profile Management
+
+---
+
+# 📊 Modules
+
+- Authentication
+- Dashboard
+- Student Management
+- Faculty Management
+- Attendance
+- Assignment Management
+- Notice Board
+- Events
+- Complaints
+- Notifications
+- Settings
+- Reports
+- Analytics
+- AI Chatbot
+
+---
+
+# 🏗 Tech Stack
+
+## Frontend
+
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- shadcn/ui
+- React Router
+- Lucide Icons
+
+---
+
+## Backend
+
+- Node.js
+- Express.js
+- MongoDB
+- JWT Authentication
+- Multer
+- bcrypt
+- REST APIs
+
+---
+
+## Database
+
+- MongoDB
+
+Collections include:
+
+- Users
+- Students
+- Faculty
+- Courses
+- Attendance
+- Assignments
+- Notices
+- Events
+- Complaints
+- Departments
+- Registration Requests
+
+---
+
+# 📂 Project Structure
+
+```
+CampusIQ
+│
+├── public
+├── server
+│   ├── config
+│   ├── middleware
+│   ├── routes
+│   ├── services
+│   └── uploads
+│
+├── src
+│   ├── components
+│   ├── pages
+│   ├── hooks
+│   ├── contexts
+│   ├── integrations
+│   ├── layouts
+│   ├── modules
+│   └── utils
+│
+├── uploads
+├── package.json
+└── README.md
 ```
 
-### Navigate to Project
+---
+
+# 🚀 Installation
+
+Clone the repository
 
 ```bash
-cd Campus-AI-Management-System
+git clone https://github.com/Rahul-codehub/CampusIQ-AI-Campus-Management.git
 ```
 
-### Install Dependencies
+Go into the project
 
-Frontend:
+```bash
+cd CampusIQ-AI-Campus-Management
+```
+
+Install dependencies
 
 ```bash
 npm install
 ```
 
-Backend:
+Create your environment file
 
-```bash
-cd server
-npm install
+```
+.env
 ```
 
-### Configure Environment Variables
-
-Create a `.env` file:
+Example
 
 ```env
-MONGODB_URI=your_mongodb_connection_string
-AUTH_SECRET=your_secret_key
+MONGODB_URI=
+AUTH_SECRET=
 API_PORT=4000
+VITE_API_BASE_URL=/api
 ```
 
-### Run Application
-
-Frontend:
+Run development
 
 ```bash
 npm run dev
 ```
 
-Backend:
+Backend
 
 ```bash
-npm run server
+node server/index.mjs
 ```
 
 ---
 
-## Future Enhancements
+# 🔒 Security
 
-* Mobile Application Support
-* AI-Based Attendance Prediction
-* Student Performance Forecasting
-* Advanced Reporting Dashboard
-* Multi-Institution Support
-* Cloud Deployment Integration
-
----
-
-## Project Status
-
-Actively under development with continuous feature enhancements and performance improvements.
+- Password Hashing (bcrypt)
+- JWT Authentication
+- Protected APIs
+- Role Based Authorization
+- Input Validation
+- Secure Password Update
 
 ---
 
-## Author
+# 📸 Screenshots
 
-Rahul Kumar
+## Login
 
-B.Tech-CSE Student | Full Stack Developer | AI Enthusiast
+> Add screenshot here
 
-GitHub: https://github.com/Rahul-codehub
+```
+docs/screenshots/login.png
+```
+
+---
+
+## Dashboard
+
+> Add screenshot here
+
+```
+docs/screenshots/dashboard.png
+```
+
+---
+
+## Attendance
+
+> Add screenshot here
+
+```
+docs/screenshots/attendance.png
+```
+
+---
+
+## Settings
+
+> Add screenshot here
+
+```
+docs/screenshots/settings.png
+```
+
+---
+
+# 🛣 Roadmap
+
+- AI Attendance Prediction
+- AI Result Analytics
+- Smart Timetable Generator
+- Parent Portal
+- Mobile Application
+- Email Notifications
+- Push Notifications
+- Cloud Deployment
+- Docker Support
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome.
+
+Fork the repository.
+
+Create your feature branch.
+
+Submit a Pull Request.
+
+---
+
+# 👨‍💻 Author
+
+**Rahul Kumar**
+
+GitHub
+
+https://github.com/Rahul-codehub
+
+---
+
+# ⭐ Support
+
+If you like this project,
+
+⭐ Star this repository.
+
+It helps the project grow.
