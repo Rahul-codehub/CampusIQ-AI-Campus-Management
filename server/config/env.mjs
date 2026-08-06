@@ -2,7 +2,11 @@ import { readFileSync } from "node:fs";
 
 loadEnv();
 
-const PORT = Number(process.env.API_PORT || 4000);
+const PORT = Number(
+  process.env.PORT ||
+  process.env.API_PORT ||
+  4000
+);
 const MONGODB_URI = process.env.MONGODB_URI;
 const DB_NAME = process.env.MONGODB_DB_NAME || "campus_ai_management";
 const AUTH_SECRET =
@@ -37,13 +41,7 @@ function loadEnv() {
     // Ignore if .env doesn't exist
   }
 }
-console.log("========== ENV ==========");
-console.log("DB_NAME:", DB_NAME);
-console.log(
-  "URI:",
-  MONGODB_URI?.replace(/:[^:@]+@/, ":********@")
-);
-console.log("=========================");
+
 
 export {
   PORT,
