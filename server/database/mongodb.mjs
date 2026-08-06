@@ -19,8 +19,11 @@ export async function getDb() {
     try {
   await client.connect();
   console.log("✅ MongoDB Connected");
+
+  await client.db("admin").command({ ping: 1 });
+  console.log("✅ MongoDB Ping Successful");
 } catch (err) {
-  console.error("❌ Mongo Error");
+  console.error("❌ Mongo Connection Failed");
   console.error(err);
   throw err;
 }
