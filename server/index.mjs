@@ -113,12 +113,25 @@ const server = createServer(async (req, res) => {
     }
 
     /* =========================================
-       ROUTES
-    ========================================= */
+   ROOT ROUTE
+========================================= */
 
-    if (pathParts[0] !== "api") {
-      return sendError(res, 404, "Route not found.");
-    }
+if (url.pathname === "/") {
+  return send(res, 200, {
+    success: true,
+    name: "CampusIQ Backend",
+    version: "1.0.0",
+    status: "Running",
+  });
+}
+
+/* =========================================
+   ROUTES
+========================================= */
+
+if (pathParts[0] !== "api") {
+  return sendError(res, 404, "Route not found.");
+}
 
     switch (pathParts[1]) {
       case "auth":
