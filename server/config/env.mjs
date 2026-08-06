@@ -37,6 +37,13 @@ function loadEnv() {
     // Ignore if .env doesn't exist
   }
 }
+console.log("========== ENV ==========");
+console.log("DB_NAME:", DB_NAME);
+console.log(
+  "URI:",
+  MONGODB_URI?.replace(/:[^:@]+@/, ":********@")
+);
+console.log("=========================");
 
 export {
   PORT,

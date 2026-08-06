@@ -16,7 +16,14 @@ export async function getDb() {
 
   if (!client) {
     client = new MongoClient(MONGODB_URI);
-    await client.connect();
+    try {
+  await client.connect();
+  console.log("✅ MongoDB Connected");
+} catch (err) {
+  console.error("❌ Mongo Error");
+  console.error(err);
+  throw err;
+}
   }
 
   if (!db) {
