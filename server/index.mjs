@@ -78,14 +78,11 @@ const server = createServer(async (req, res) => {
       return;
     }
 
-   console.log("req.url =", req.url);
-console.log("host =", req.headers.host);
-
-const url = new URL(
-  `http://${req.headers.host}${req.url}`
-);
-
-console.log("pathname =", url.pathname);
+    const url = new URL(
+      req.url || "/",
+      `http://${req.headers.host || "localhost"}`
+    );
+    console.log("Parsed pathname:", url.pathname);
 
     const pathParts = url.pathname
       .split("/")
