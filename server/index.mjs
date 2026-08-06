@@ -68,6 +68,7 @@ function serveStaticFile(req, res) {
 ========================================= */
 
 const server = createServer(async (req, res) => {
+  console.log("Incoming request:", req.method, req.url);
   if (req.method === "OPTIONS") {
     return send(res, 204);
   }
@@ -81,6 +82,7 @@ const server = createServer(async (req, res) => {
       req.url || "/",
       `http://${req.headers.host || "localhost"}`
     );
+    console.log("Parsed pathname:", url.pathname);
 
     const pathParts = url.pathname
       .split("/")
