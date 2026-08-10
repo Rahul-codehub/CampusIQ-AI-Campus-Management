@@ -8,6 +8,7 @@ export type ComplaintStatus =
   | "resolved"
   | "rejected";
 
+
 /* ==========================================================
    PRIORITY
 ========================================================== */
@@ -17,6 +18,7 @@ export type ComplaintPriority =
   | "medium"
   | "high"
   | "urgent";
+
 
 /* ==========================================================
    CATEGORY
@@ -29,6 +31,17 @@ export type ComplaintCategory =
   | "infrastructure"
   | "general";
 
+
+/* ==========================================================
+   CREATOR ROLE
+========================================================== */
+
+export type ComplaintCreatorRole =
+  | "student"
+  | "faculty"
+  | "admin";
+
+
 /* ==========================================================
    COMPLAINT
 ========================================================== */
@@ -36,7 +49,18 @@ export type ComplaintCategory =
 export interface Complaint {
   id: string;
 
+  /* -----------------------------------------
+     CREATOR
+  ----------------------------------------- */
+
   user_id: string;
+
+  creator_role: ComplaintCreatorRole;
+
+
+  /* -----------------------------------------
+     COMPLAINT INFORMATION
+  ----------------------------------------- */
 
   title: string;
 
@@ -46,17 +70,42 @@ export interface Complaint {
 
   priority: ComplaintPriority;
 
+
+  /* -----------------------------------------
+     STATUS
+  ----------------------------------------- */
+
   status: ComplaintStatus;
 
+
+  /* -----------------------------------------
+     RESPONSE
+  ----------------------------------------- */
+
   response: string | null;
+
+
+  /* -----------------------------------------
+     RESOLUTION
+  ----------------------------------------- */
+
+  resolved_by: string | null;
+
+  resolved_at: string | null;
+
+
+  /* -----------------------------------------
+     TIMESTAMPS
+  ----------------------------------------- */
 
   created_at: string;
 
   updated_at: string;
 }
 
+
 /* ==========================================================
-   CREATE / UPDATE FORM
+   CREATE COMPLAINT FORM
 ========================================================== */
 
 export interface ComplaintFormData {

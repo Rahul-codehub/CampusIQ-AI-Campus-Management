@@ -45,11 +45,16 @@ const collectionPermissions = {
     update: ["admin", "faculty"],
   },
 
-  complaints: {
-    read: ["admin", "faculty", "student"],
-    create: ["admin", "faculty", "student"],
-    update: ["admin", "faculty"],
-  },
+  /* =========================================
+     COMPLAINTS
+  ========================================= */
+
+ complaints: {
+  read: ["admin", "faculty", "student"],
+  create: ["admin", "faculty", "student"],
+  update: ["admin", "faculty"],
+  delete: ["admin", "faculty"],
+},
 
   notices: {
     read: ["admin"],
@@ -70,9 +75,17 @@ const collectionPermissions = {
   },
 };
 
+
+/* =========================================================
+   CHECK GENERAL COLLECTION PERMISSION
+========================================================= */
+
 export function hasPermission(user, collection, action) {
   const roles = user?.roles || ["student"];
 
+  /*
+   * Admin has full access.
+   */
   if (roles.includes("admin")) {
     return true;
   }
@@ -85,6 +98,11 @@ export function hasPermission(user, collection, action) {
   );
 }
 
+
+/* =========================================================
+   SCOPED READ FILTERS
+========================================================= */
+
 export function scopedFilters(
   collection,
   filters,
@@ -92,22 +110,107 @@ export function scopedFilters(
 ) {
   const roles = user?.roles || ["student"];
 
-  if (
-    roles.includes("admin") ||
-    roles.includes("faculty")
-  ) {
+  /*
+   * Admin can see everything.
+   */
+  if (roles.includes("admin")) {
     return filters;
   }
 
-  if (
-    collection === "complaints" ||
-    collection === "chatbot_logs"
-  ) {
+
+  /* =========================================
+     COMPLAINTS
+  ========================================= */
+
+  if (collection === "complaints") {
+
+    /*
+     * Faculty can see:
+     *
+     * 1. Student complaints
+     * 2. Their own complaints
+     *
+     * They cannot see another faculty member's
+     * complaints.
+     */
+    if (roles.includes("faculty")) {
+      return {
+        ...filters,
+        $or: [
+          {
+            creator_role: "student",
+          },
+          {
+            user_id: user?.id,
+          },
+        ],
+      };
+    }
+
+
+    /*
+     * Students can only see complaints
+     * created by themselves.
+     */
+    if (roles.includes("student")) {
+      return {
+        ...filters,
+        user_id: user?.id,
+      };
+    }
+  }
+
+
+  /* =========================================
+     CHATBOT LOGS
+  ========================================= */
+
+  if (collection === "chatbot_logs") {
     return {
       ...filters,
       user_id: user?.id,
     };
   }
 
+
   return filters;
+}
+
+
+/* =========================================================
+   COMPLAINT UPDATE PERMISSION
+========================================================= */
+
+export function canUpdateComplaint(user, complaint) {
+  const roles = user?.roles || ["student"];
+
+
+  /*
+   * Admin can update any complaint.
+   */
+  if (roles.includes("admin")) {
+    return true;
+  }
+
+
+  /*
+   * Students cannot update complaints.
+   */
+  if (roles.includes("student")) {
+    return false;
+  }
+
+
+  /*
+   * Faculty can update ONLY student complaints.
+   *
+   * A faculty member cannot resolve or modify
+   * another faculty member's complaint.
+   */
+  if (roles.includes("faculty")) {
+    return complaint?.creator_role === "student";
+  }
+
+
+  return false;
 }

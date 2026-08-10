@@ -1,3 +1,4 @@
+
 import { useMemo, useState } from "react";
 
 import AppLayout from "@/components/layout/AppLayout";
@@ -10,6 +11,8 @@ import {
 } from "@/components/ui/card";
 
 import { Plus } from "lucide-react";
+
+import { useAuth } from "@/contexts/AuthContext";
 
 import { useComplaints } from "./hooks/useComplaints";
 
@@ -27,12 +30,26 @@ import DeleteComplaintDialog from "./components/DeleteComplaintDialog";
 
 export default function ComplaintsPage() {
   const {
+    user,
+    roles,
+  } = useAuth();
+
+  const {
     complaints,
     loading,
     createComplaint,
     updateComplaint,
+    updateStatus,
     deleteComplaint,
   } = useComplaints();
+
+  /* ==========================================
+     ROLE
+  ========================================== */
+
+  const isAdmin = roles.includes("admin");
+  const isFaculty = roles.includes("faculty");
+  const isStudent = roles.includes("student");
 
   /* ==========================================
      SEARCH & FILTER
@@ -61,6 +78,54 @@ export default function ComplaintsPage() {
 
   const [selectedComplaint, setSelectedComplaint] =
     useState<Complaint | null>(null);
+
+  /* ==========================================
+     ROLE BASED PERMISSIONS
+  ========================================== */
+
+  const canEditComplaint = (
+    complaint: Complaint
+  ) => {
+    if (isAdmin) return true;
+
+    if (isFaculty) {
+      return (
+        complaint.creator_role === "faculty" &&
+        complaint.user_id === user?.id
+      );
+    }
+
+    return false;
+  };
+
+  const canDeleteComplaint = (
+    complaint: Complaint
+  ) => {
+    if (isAdmin) return true;
+
+    if (isFaculty) {
+      return (
+        complaint.creator_role === "faculty" &&
+        complaint.user_id === user?.id
+      );
+    }
+
+    return false;
+  };
+
+  const canResolveComplaint = (
+    complaint: Complaint
+  ) => {
+    if (isAdmin) return true;
+
+    if (isFaculty) {
+      return (
+        complaint.creator_role === "student"
+      );
+    }
+
+    return false;
+  };
 
   /* ==========================================
      FILTERED DATA
@@ -104,11 +169,13 @@ export default function ComplaintsPage() {
   const handleCreate = async (
     data: ComplaintFormData
   ) => {
-    const currentUserId = "CURRENT_USER_ID";
+    if (!user?.id) {
+      return;
+    }
 
     await createComplaint({
       ...data,
-      user_id: currentUserId,
+      user_id: user.id,
     });
 
     setDialogOpen(false);
@@ -129,8 +196,25 @@ export default function ComplaintsPage() {
     );
 
     setSelectedComplaint(null);
-
     setDialogOpen(false);
+  };
+
+  /* ==========================================
+     RESOLVE
+  ========================================== */
+
+  const handleResolve = async (
+    complaint: Complaint
+  ) => {
+    if (!canResolveComplaint(complaint)) {
+      return;
+    }
+
+    await updateStatus(
+      complaint.id,
+      "resolved",
+      "Complaint reviewed and resolved."
+    );
   };
 
   /* ==========================================
@@ -145,9 +229,27 @@ export default function ComplaintsPage() {
     );
 
     setSelectedComplaint(null);
-
     setDeleteOpen(false);
   };
+
+  /* ==========================================
+     PAGE TEXT
+  ========================================== */
+
+  const pageTitle =
+    isStudent
+      ? "My Complaints"
+      : isFaculty
+      ? "Campus Complaints"
+      : "Complaint Management";
+
+  const pageDescription =
+    isStudent
+      ? "Submit and track your complaints."
+      : isFaculty
+      ? "Review student complaints and manage your own complaints."
+      : "Manage and monitor all campus complaints.";
+
   return (
     <AppLayout>
       <div className="space-y-6">
@@ -161,11 +263,11 @@ export default function ComplaintsPage() {
           <div>
 
             <h1 className="text-3xl font-bold tracking-tight">
-              Complaints
+              {pageTitle}
             </h1>
 
             <p className="text-muted-foreground">
-              Manage and monitor campus complaints.
+              {pageDescription}
             </p>
 
           </div>
@@ -216,6 +318,10 @@ export default function ComplaintsPage() {
               complaints={filteredComplaints}
               loading={loading}
 
+              canEdit={canEditComplaint}
+              canDelete={canDeleteComplaint}
+              canResolve={canResolveComplaint}
+
               onView={(complaint) => {
                 setSelectedComplaint(
                   complaint
@@ -239,19 +345,24 @@ export default function ComplaintsPage() {
 
                 setDeleteOpen(true);
               }}
+
+              onResolve={handleResolve}
             />
 
           </CardContent>
 
         </Card>
-                {/* ===========================
+
+        {/* ===========================
             CREATE / EDIT DIALOG
         ============================ */}
 
         <ComplaintDialog
           open={dialogOpen}
           onOpenChange={setDialogOpen}
-          complaint={selectedComplaint ?? undefined}
+          complaint={
+            selectedComplaint ?? undefined
+          }
           onSubmit={
             selectedComplaint
               ? handleUpdate
@@ -277,9 +388,7 @@ export default function ComplaintsPage() {
           open={deleteOpen}
           onOpenChange={setDeleteOpen}
           complaint={selectedComplaint}
-          onDelete={async () => {
-            await handleDelete();
-          }}
+          onDelete={handleDelete}
         />
 
       </div>

@@ -37,7 +37,7 @@ export default function ComplaintStats({
 
   const stats = [
     {
-      title: "Total Complaints",
+      title: "Visible Complaints",
       value: total,
       icon: AlertTriangle,
       color: "text-primary",

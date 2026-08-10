@@ -1,7 +1,9 @@
+
 import {
   Eye,
   Pencil,
   Trash2,
+  CheckCircle2,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -24,17 +26,45 @@ interface ComplaintTableProps {
   complaints: Complaint[];
   loading: boolean;
 
-  onView: (complaint: Complaint) => void;
-  onEdit: (complaint: Complaint) => void;
-  onDelete: (complaint: Complaint) => void;
+  canEdit: (
+    complaint: Complaint
+  ) => boolean;
+
+  canDelete: (
+    complaint: Complaint
+  ) => boolean;
+
+  canResolve: (
+    complaint: Complaint
+  ) => boolean;
+
+  onView: (
+    complaint: Complaint
+  ) => void;
+
+  onEdit: (
+    complaint: Complaint
+  ) => void;
+
+  onDelete: (
+    complaint: Complaint
+  ) => void;
+
+  onResolve: (
+    complaint: Complaint
+  ) => void;
 }
 
 export default function ComplaintTable({
   complaints,
   loading,
+  canEdit,
+  canDelete,
+  canResolve,
   onView,
   onEdit,
   onDelete,
+  onResolve,
 }: ComplaintTableProps) {
 
   if (loading) {
@@ -60,15 +90,29 @@ export default function ComplaintTable({
 
         <TableRow>
 
-          <TableHead>Title</TableHead>
+          <TableHead>
+            Title
+          </TableHead>
 
-          <TableHead>Category</TableHead>
+          <TableHead>
+            Created By
+          </TableHead>
 
-          <TableHead>Priority</TableHead>
+          <TableHead>
+            Category
+          </TableHead>
 
-          <TableHead>Status</TableHead>
+          <TableHead>
+            Priority
+          </TableHead>
 
-          <TableHead>Created</TableHead>
+          <TableHead>
+            Status
+          </TableHead>
+
+          <TableHead>
+            Created
+          </TableHead>
 
           <TableHead className="text-right">
             Actions
@@ -80,89 +124,151 @@ export default function ComplaintTable({
 
       <TableBody>
 
-        {complaints.map((complaint) => (
+        {complaints.map((complaint) => {
 
-          <TableRow key={complaint.id}>
+          const showEdit =
+            canEdit(complaint);
 
-            <TableCell>
+          const showDelete =
+            canDelete(complaint);
 
-              <div>
+          const showResolve =
+            canResolve(complaint) &&
+            complaint.status !== "resolved";
 
-                <div className="font-medium">
-                  {complaint.title}
+          return (
+            <TableRow
+              key={complaint.id}
+            >
+
+              <TableCell>
+
+                <div>
+
+                  <div className="font-medium">
+                    {complaint.title}
+                  </div>
+
+                  <div className="text-sm text-muted-foreground line-clamp-1">
+                    {complaint.description}
+                  </div>
+
                 </div>
 
-                <div className="text-sm text-muted-foreground line-clamp-1">
-                  {complaint.description}
+              </TableCell>
+
+              <TableCell>
+                <span className="capitalize">
+                  {complaint.creator_role}
+                </span>
+              </TableCell>
+
+              <TableCell className="capitalize">
+                {complaint.category.replace(
+                  "_",
+                  " "
+                )}
+              </TableCell>
+
+              <TableCell>
+                <PriorityBadge
+                  priority={
+                    complaint.priority
+                  }
+                />
+              </TableCell>
+
+              <TableCell>
+                <StatusBadge
+                  status={
+                    complaint.status
+                  }
+                />
+              </TableCell>
+
+              <TableCell>
+                {new Date(
+                  complaint.created_at
+                ).toLocaleDateString()}
+              </TableCell>
+
+              <TableCell>
+
+                <div className="flex justify-end gap-1">
+
+                  {/* VIEW */}
+
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    title="View complaint"
+                    onClick={() =>
+                      onView(
+                        complaint
+                      )
+                    }
+                  >
+                    <Eye className="h-4 w-4" />
+                  </Button>
+
+                  {/* RESOLVE */}
+
+                  {showResolve && (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      title="Resolve complaint"
+                      onClick={() =>
+                        onResolve(
+                          complaint
+                        )
+                      }
+                    >
+                      <CheckCircle2 className="h-4 w-4 text-green-600" />
+                    </Button>
+                  )}
+
+                  {/* EDIT */}
+
+                  {showEdit && (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      title="Edit complaint"
+                      onClick={() =>
+                        onEdit(
+                          complaint
+                        )
+                      }
+                    >
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                  )}
+
+                  {/* DELETE */}
+
+                  {showDelete && (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      title="Delete complaint"
+                      onClick={() =>
+                        onDelete(
+                          complaint
+                        )
+                      }
+                    >
+                      <Trash2 className="h-4 w-4 text-red-500" />
+                    </Button>
+                  )}
+
                 </div>
 
-              </div>
+              </TableCell>
 
-            </TableCell>
-
-            <TableCell className="capitalize">
-              {complaint.category.replace("_", " ")}
-            </TableCell>
-
-            <TableCell>
-              <PriorityBadge
-                priority={complaint.priority}
-              />
-            </TableCell>
-
-            <TableCell>
-              <StatusBadge
-                status={complaint.status}
-              />
-            </TableCell>
-
-            <TableCell>
-              {new Date(
-                complaint.created_at
-              ).toLocaleDateString()}
-            </TableCell>
-
-            <TableCell>
-
-              <div className="flex justify-end gap-2">
-
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() =>
-                    onView(complaint)
-                  }
-                >
-                  <Eye className="h-4 w-4" />
-                </Button>
-
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() =>
-                    onEdit(complaint)
-                  }
-                >
-                  <Pencil className="h-4 w-4" />
-                </Button>
-
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() =>
-                    onDelete(complaint)
-                  }
-                >
-                  <Trash2 className="h-4 w-4 text-red-500" />
-                </Button>
-
-              </div>
-
-            </TableCell>
-
-          </TableRow>
-
-        ))}
+            </TableRow>
+          );
+        })}
 
       </TableBody>
 
