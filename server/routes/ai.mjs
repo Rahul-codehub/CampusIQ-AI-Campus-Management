@@ -71,15 +71,15 @@ export async function handleAI(req, res) {
         break;
       }
 
-     case "attendance": {
-    context = await getAttendanceContext();
+      case "attendance": {
+        context = await getAttendanceContext();
 
-    console.log("\n===== ATTENDANCE CONTEXT =====");
-    console.log(context);
-    console.log("==============================\n");
+        console.log("\n===== ATTENDANCE CONTEXT =====");
+        console.log(context);
+        console.log("==============================\n");
 
-    break;
-}
+        break;
+      }
 
       case "notice":
         context =
@@ -108,7 +108,7 @@ export async function handleAI(req, res) {
 
         body: JSON.stringify({
           model:
-            "llama-3.3-70b-versatile",
+            "openai/gpt-oss-120b",
 
           temperature: 0.4,
 
