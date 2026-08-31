@@ -103,14 +103,22 @@ const server = createServer(async (req, res) => {
        HEALTH
     ========================================= */
 
-    if (url.pathname === "/api/health") {
-      await getDb();
+    // if (url.pathname === "/api/health") {
+    //   await getDb();
 
-      return send(res, 200, {
-        ok: true,
-        database: DB_NAME,
-      });
-    }
+    //   return send(res, 200, {
+    //     ok: true,
+    //     database: DB_NAME,
+    //   });
+    // }
+if (url.pathname === "/api/health") {
+  return send(res, 200, {
+    ok: true,
+    name: "CampusIQ Backend",
+    status: "Running",
+    timestamp: new Date().toISOString(),
+  });
+}
 
     /* =========================================
    ROOT ROUTE
@@ -196,9 +204,21 @@ if (pathParts[0] !== "api") {
    START SERVER
 ========================================= */
 
-server.listen(PORT, () => {
+// server.listen(PORT, () => {
+//   console.log(
+//     `MongoDB API server listening on http://127.0.0.1:${PORT}`
+//   );
+
+//   if (!MONGODB_URI) {
+//     console.warn(
+//       "MONGODB_URI is not set. Database requests will fail until it is configured."
+//     );
+//   }
+// });
+
+server.listen(PORT, "0.0.0.0", () => {
   console.log(
-    `MongoDB API server listening on http://127.0.0.1:${PORT}`
+    `MongoDB API server listening on port ${PORT}`
   );
 
   if (!MONGODB_URI) {
